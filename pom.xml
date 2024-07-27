@@ -207,35 +207,6 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <plugins>
-            <!--跳过测试，执行多模块构建：
-            mvn clean package assembly:single '-Dmaven.test.skip=true'-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.github.paicoding.forum.web.QuickForumApplication</mainClass>
-                        </manifest>
-                    </archive>
-                    <outputDirectory>${project.build.directory}/#maven-assembly-plugin</outputDirectory>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
     <repositories>
         <repository>
