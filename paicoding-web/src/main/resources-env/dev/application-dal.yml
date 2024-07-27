@@ -1,6 +1,6 @@
 spring:
   datasource: #单数据源
-    url: jdbc:mysql://localhost:3306/${database.name}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://mysql:3306/${database.name}?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password:
   dynamic: # 动态数据源
@@ -8,7 +8,7 @@ spring:
     datasource:
       master:
         # 数据库名，从配置 database.name 中获取
-        url: jdbc:mysql://localhost:3306/${database.name}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://localhost:3306/${database.name}?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password:
         #        type: com.alibaba.druid.pool.DruidDataSource
@@ -29,7 +29,7 @@ spring:
         username: root
         password:
   redis:
-    host: localhost
+    host: redis
     port: 6379
     password:
 

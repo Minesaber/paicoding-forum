@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
   servlet:
     session:
       timeout: 5m # 设置session的有效期为五分钟
