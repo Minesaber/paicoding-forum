@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 微信公众号登录相关
- *
- * @author YiHui
- * @date 2022/9/2
+ * 处理微信公众号的回调请求
  */
 @RequestMapping(path = "wx")
 @RestController
@@ -33,10 +30,7 @@ public class WxCallbackRestController {
     private WxAckHelper wxHelper;
 
     /**
-     * 微信的公众号接入 token 验证，即返回echostr的参数值
-     *
-     * @param request
-     * @return
+     * 公众号接入：token校验
      */
     @GetMapping(path = "callback")
     public String check(HttpServletRequest request) {
@@ -48,25 +42,27 @@ public class WxCallbackRestController {
     }
 
     /**
-     * fixme: 需要做防刷校验
-     * 微信的响应返回
-     * 本地测试访问: curl -X POST 'http://localhost:8080/wx/callback' -H 'content-type:application/xml' -d '<xml><URL><![CDATA[https://hhui.top]]></URL><ToUserName><![CDATA[一灰灰blog]]></ToUserName><FromUserName><![CDATA[demoUser1234]]></FromUserName><CreateTime>1655700579</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[login]]></Content><MsgId>11111111</MsgId></xml>' -i
-     *
-     * @param msg
-     * @return
+     * fixme：需要做防刷校验
+     * 公众号回调：各类事件的处理
      */
     @PostMapping(path = "callback",
             consumes = {"application/xml", "text/xml"},
             produces = "application/xml;charset=utf-8")
     public BaseWxMsgResVo callBack(@RequestBody WxTxtMsgReqVo msg) {
-        String content = msg.getContent();
-        if ("subscribe".equals(msg.getEvent()) || "scan".equalsIgnoreCase(msg.getEvent())) {
+        /*
+        fixme：带参数二维码需要企业微信认证
+        1、扫描带参数的二维码事件
+            1）如果用户还未关注公众号，则用户可以关注公众号，关注后微信会将带场景值关注事件推送给开发者。
+            2）如果用户已经关注公众号，则微信会将带场景值扫描事件推送给开发者。
+         */
+        if ("scan".equalsIgnoreCase(msg.getEvent())) {
+            // 扫描带参数的二维码事件：获取二维码携带的场景值
             String key = msg.getEventKey();
             if (StringUtils.isNotBlank(key) || key.startsWith("qrscene_")) {
-                // 带参数的二维码，扫描、关注事件拿到之后，直接登录，省却输入验证码这一步
-                // fixme 带参数二维码需要 微信认证，个人公众号无权限
                 String code = key.substring("qrscene_".length());
+                // 更新服务端的注册、登录状态
                 sessionService.autoRegisterWxUserInfo(msg.getFromUserName());
+                // 寻找半长连接，推送状态更新
                 qrLoginHelper.login(code);
                 WxTxtMsgResVo res = new WxTxtMsgResVo();
                 res.setContent("登录成功");
@@ -74,8 +70,10 @@ public class WxCallbackRestController {
                 return res;
             }
         }
-
-        BaseWxMsgResVo res = wxHelper.buildResponseBody(msg.getEvent(), content, msg.getFromUserName());
+        /*
+        2、其他事件的处理
+         */
+        BaseWxMsgResVo res = wxHelper.buildResponseBody(msg.getEvent(), msg.getContent(), msg.getFromUserName());
         fillResVo(res, msg);
         return res;
     }
