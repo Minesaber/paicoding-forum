@@ -18,11 +18,8 @@ import java.io.IOException;
 
 
 /**
- * 公众号登陆的长连接控制器
- *
- * @author louzai
- * @date : 2022/8/3 10:56
- **/
+ * 处理登录页的前端请求
+ */
 @Controller
 @Slf4j
 public class WxLoginController extends BaseViewController {
@@ -31,8 +28,6 @@ public class WxLoginController extends BaseViewController {
 
     /**
      * 客户端与后端建立扫描二维码的长连接
-     *
-     * @return
      */
     @MdcDot
     @ResponseBody
@@ -49,9 +44,6 @@ public class WxLoginController extends BaseViewController {
 
     /**
      * 刷新验证码
-     *
-     * @return
-     * @throws IOException
      */
     @MdcDot
     @GetMapping(path = "/login/refresh")

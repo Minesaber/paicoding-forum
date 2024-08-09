@@ -15,8 +15,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author YiHui
- * @date 2022/9/5
+ * 处理半长连接
  */
 @Slf4j
 @Component
@@ -62,8 +61,6 @@ public class WxLoginHelper {
      * 保持与前端的长连接
      * <p>
      * 直接根据设备拿之前初始化的验证码，不直接使用传过来的code
-     *
-     * @return
      */
     public SseEmitter subscribe() throws IOException {
         String deviceId = ReqInfoContext.getReqInfo().getDeviceId();
@@ -106,9 +103,6 @@ public class WxLoginHelper {
 
     /**
      * 刷新验证码
-     *
-     * @return
-     * @throws IOException
      */
     public String refreshCode() throws IOException {
         String deviceId = ReqInfoContext.getReqInfo().getDeviceId();
@@ -134,23 +128,15 @@ public class WxLoginHelper {
     }
 
     /**
-     * 微信公众号登录
-     *
-     * @param verifyCode 用户输入的登录验证码
-     * @return
+     * 通过验证码找到对应的长连接
      */
     public boolean login(String verifyCode) {
-        // 通过验证码找到对应的长连接
         SseEmitter sseEmitter = verifyCodeCache.getIfPresent(verifyCode);
-        if (sseEmitter == null) {
+        if (sseEmitter == null)
             return false;
-        }
-
-        String session = sessionService.loginByWx(ReqInfoContext.getReqInfo().getUserId());
         try {
-            // 登录成功，写入session
+            String session = sessionService.loginByWx(ReqInfoContext.getReqInfo().getUserId());
             sseEmitter.send(session);
-            // 设置cookie的路径
             sseEmitter.send("login#" + LoginService.SESSION_KEY + "=" + session + ";path=/;");
             return true;
         } catch (Exception e) {
