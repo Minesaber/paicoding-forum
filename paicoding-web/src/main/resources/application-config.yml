@@ -7,13 +7,13 @@ view:
     websiteFaviconIconUrl: https://paicoding.com/img/icon.png
     zsxqUrl: https://paicoding.com/article/detail/314
     zsxqPosterUrl: https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/javabetter.jpg
-    contactMeTitle: 联系我 - 沉默王二的狗腿子
-    contactMeWxQrCode: https://cdn.tobebetterjavaer.com/paicoding/paicoding-qrcode.png
+    contactMeTitle: 联系我
+    contactMeWxQrCode: https://s3.uuu.ovh/imgs/2024/08/09/bfb85b116b43a343.png
     contactMeStarQrCode: https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/qiye-weixin.png
     pageSize: 20
     cdnImgStyle:
-    websiteRecord: 备案被小人偷袭了
-    wxLoginUrl: http://weixin.qq.com/r/WxwpMefE-rqBraNS90lJ
+    websiteRecord: 2024
+    wxLoginUrl: http://weixin.qq.com/r/bhHYwKLExv_5reaj90R8
     host: http://127.0.0.1:${server.port}
     welcomeInfo: 欢迎来到技术派，戳<a href="/article/detail/15">技术派全方位视角解读</a>了解我们
     oss:
